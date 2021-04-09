@@ -1,8 +1,8 @@
-"""add film model
+"""empty message
 
-Revision ID: 1b88b9f313b0
+Revision ID: 70ff3b936b69
 Revises: 
-Create Date: 2021-04-09 14:25:36.050303
+Create Date: 2021-04-09 14:38:35.133276
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1b88b9f313b0'
+revision = '70ff3b936b69'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -24,7 +24,7 @@ def upgrade():
     sa.Column('release_date', sa.Date(), nullable=False),
     sa.Column('uuid', sa.String(length=36), nullable=True),
     sa.Column('description', sa.Text(), nullable=True),
-    sa.Column('ditributed_by', sa.String(length=120), nullable=False),
+    sa.Column('distributed_by', sa.String(length=120), nullable=False),
     sa.Column('length', sa.Float(), nullable=True),
     sa.Column('rating', sa.Float(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
