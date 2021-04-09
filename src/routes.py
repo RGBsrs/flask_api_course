@@ -7,12 +7,12 @@ def get_all_films():
     return [
     {
         'id': '1',
-        'titile': 'new film',
+        'title': 'new film',
         'release_date':'1.01.01',
     },
     {
         'id': '2',
-        'titile': 'new film 2',
+        'title': 'new film 2',
         'release_date':'1.01.02',
     },
     ]
@@ -25,7 +25,7 @@ def get_film_by_uuid(uuid: str) -> dict:
 def create_film(film_json: dict) -> List[dict]:
     films = get_all_films()
     films.append(film_json)
-    return films
+    return str(films)
 
 class FilmListApi(MethodView):
     def get(self, uuid = None):
@@ -38,7 +38,7 @@ class FilmListApi(MethodView):
         return film, 200
         
     def post(self):
-        film_json = request.json
+        film_json = request.get_json()
         return create_film(film_json),201
 
     def put(self):
