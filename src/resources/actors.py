@@ -3,7 +3,7 @@ from flask import request, jsonify
 from marshmallow import ValidationError
 from src import db
 from src.models import Actor
-from src.schemas import ActorSchema
+from src.schemas.actors import ActorSchema
 
 
 class ActorListApi(MethodView):
