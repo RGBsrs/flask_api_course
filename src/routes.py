@@ -2,7 +2,7 @@ from src.resources.aggregations import AggregationApi
 from src import app
 from src.resources.actors import ActorListApi
 from src.resources.films import FilmListApi
-from src.resources.aggregations import AggregationApi
+from src.resources.aggregations import AggregationApi 
 
 
 
