@@ -17,7 +17,7 @@ SWAGGER_BLUEPRINT = get_swaggerui_blueprint(
     SWAGGER_URL,
     API_URL,
     config = {
-        'app_name' : 'Flask Api tutorial'
+        'app_name' : 'Flask Api Course'
     }
 )
 
