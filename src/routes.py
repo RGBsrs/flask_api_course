@@ -1,38 +1,32 @@
-from operator import ge
+from datetime import datetime
+from flask.globals import session
 from flask.views import MethodView
 from flask import request, jsonify
-from . import app, db
-from .models import Film
-from datetime import datetime
+from marshmallow import ValidationError
+from src import app, db
+from src.models import Film
+from src.schemas import FilmSchema
 
 class FilmListApi(MethodView):
+    film_shema = FilmSchema()
+
     def get(self, uuid = None):
         if not uuid:
             films = db.session.query(Film).all()
-            return jsonify([f.serialize() for f in films]), 200
+            return jsonify(self.film_shema.dump(films, many = True)), 200
         film = db.session.query(Film).filter_by(uuid = uuid).first()
         if not film:
             return '', 404
-        return jsonify(film.serialize()), 200
+        return jsonify(self.film_shema.dump(film)), 200
         
     def post(self):
-        film_json = request.get_json()
-        if not film_json:
-            return {'Message' : 'Missed data'}, 400
         try:
-            film = Film(
-                title = film_json['title'],
-                release_date = datetime.strptime(film_json['release_date'], '%B %d, %Y'),
-                distributed_by = film_json['distributed_by'],
-                description = film_json.get('description'),
-                length = film_json.get('length'),
-                rating = film_json.get('rating')
-            )
-            db.session.add(film)
-            db.session.commit()
-        except (ValueError, KeyError):
-            return {'Message' : 'Wrong data error'}, 400
-        return {'Message' : 'Created'}, 201
+            film = self.film_shema.load(request.json, session = db.session)
+        except ValidationError as e:
+            return {'Message': f'error: {e}'}, 400
+        db.session.add(film)
+        db.session.commit()
+        return jsonify(self.film_shema.dump(film)), 201
 
     def put(self, uuid):
         film_json = request.get_json()
