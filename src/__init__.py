@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_swagger_ui import get_swaggerui_blueprint
 
 
+
 app = Flask(__name__)
 app.config.from_object(config.Config)
 
@@ -25,3 +26,8 @@ app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix = SWAGGER_URL)
 
 from src.database import models
 from src import routes
+
+@app.cli.command('new_db')
+def new_db():
+    from src.database.inserts import populate_films
+    populate_films()
