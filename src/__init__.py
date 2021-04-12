@@ -23,4 +23,5 @@ SWAGGER_BLUEPRINT = get_swaggerui_blueprint(
 
 app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix = SWAGGER_URL)
 
-from . import models, routes
+from src.database import models
+from src import routes

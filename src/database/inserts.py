@@ -1,7 +1,7 @@
 from datetime import date
 
 from src import db
-from src.models import Film, Actor
+from src.database.models import Film, Actor
 
 
 def populate_films():
