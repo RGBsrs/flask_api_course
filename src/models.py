@@ -42,7 +42,7 @@ class Actor(db.Model):
     __tablename__ = 'actors'
 
     id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(120), nullable = False)
+    name = db.Column(db.String(120), unique = True, nullable = False)
     birthday = db.Column(db.Date)
     is_active = db.Column(db.Boolean, default = False)
 
