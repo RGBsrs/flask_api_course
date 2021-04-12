@@ -2,7 +2,7 @@ from flask.views import MethodView
 from flask import request, jsonify
 from marshmallow import ValidationError
 from src import db
-from src.models import Actor
+from src.database.models import Actor
 from src.schemas.actors import ActorSchema
 
 

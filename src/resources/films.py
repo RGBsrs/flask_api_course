@@ -2,7 +2,7 @@ from flask.views import MethodView
 from flask import request, jsonify
 from marshmallow import ValidationError
 from src import db
-from src.models import Film
+from src.database.models import Film
 from src.schemas.films import FilmSchema
 
 

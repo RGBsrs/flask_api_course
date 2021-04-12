@@ -1,6 +1,5 @@
 import uuid
-from datetime import datetime
-from . import db
+from src import db
 
 class Film(db.Model):
     __tablename__ = 'films'

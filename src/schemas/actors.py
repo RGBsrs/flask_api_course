@@ -1,5 +1,5 @@
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
-from src.models import  Actor
+from src.database.models import  Actor
 
 
 class ActorSchema(SQLAlchemyAutoSchema):
