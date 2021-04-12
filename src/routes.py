@@ -29,25 +29,13 @@ class FilmListApi(MethodView):
         return jsonify(self.film_shema.dump(film)), 201
 
     def put(self, uuid):
-        film_json = request.get_json()
-        if not film_json:
-            return {'Message' : 'Missed data'}, 400
-        try:
-            db.session.query(Film).filter_by(uuid=uuid).update(
-                dict(
-                    title = film_json['title'],
-                    release_date = datetime.strptime(film_json['release_date'], '%B %d, %Y'),
-                    distributed_by = film_json['distributed_by'],
-                    description = film_json.get('description'),
-                    length = film_json.get('length'),
-                    rating = film_json.get('rating')
-                )
-            )
-            db.session.commit()
-        except (ValueError, KeyError):
-            return {'Message' : 'Wrong data error'}, 400
-        return {'Message' : 'Updated'}, 200
-        
+        film = db.session.query(Film).filter_by(uuid = uuid).first()
+        if not film:
+            return '', 404
+        film = self.film_shema.load(request.json, instance = film, session = db.session)
+        db.session.add(film)
+        db.session.commit()
+        return jsonify(self.film_shema.dump(film)), 200
 
     def patch(self, uuid):
         film = db.session.query(Film).filter(uuid==uuid).first()
