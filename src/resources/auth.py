@@ -1,4 +1,6 @@
 import datetime
+from functools import wraps
+
 import jwt
 from flask import request, jsonify
 from flask.views import MethodView
@@ -45,3 +47,21 @@ class AuthLogin(MethodView):
                 "token" : token.decode('utf-8')
             }
         )
+
+
+def token_required(func):
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        token = request.headers.get('X-API-KEY', '')
+        if not token:
+            return '', 401, {"WWW-Authenticate": "Basic realm='Authentication required'"}
+        try:
+            uuid = jwt.decode(token,app.config['SECRET_KEY'])['user_id']
+        except (KeyError, jwt.ExpiredSignatureError):
+            return '', 401, {"WWW-Authenticate": "Basic realm='Authentication required'"}
+        user = db.session.query(User).filter_by(uuid = uuid).first()
+        if not user:
+            return '', 401, {"WWW-Authenticate": "Basic realm='Authentication required'"}
+        return func(self, *args, **kwargs)
+
+    return wrapper
