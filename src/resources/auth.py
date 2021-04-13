@@ -7,7 +7,7 @@ from src.schemas.users import UserSchema
 from src import db
 
 class AuthRegister(MethodView):
-    user_schema = UserSchema
+    user_schema = UserSchema()
 
     def post(self):
         try:
