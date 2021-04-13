@@ -1,8 +1,10 @@
+from src.resources.auth import AuthRegister
 from src.resources.aggregations import AggregationApi
 from src import app
 from src.resources.actors import ActorListApi
 from src.resources.films import FilmListApi
 from src.resources.aggregations import AggregationApi 
+from src.resources.auth import AuthRegister
 
 
 
@@ -17,3 +19,6 @@ app.add_url_rule('/actors/<name>', view_func=actor_list_api, strict_slashes = Fa
 
 aggregation_api = AggregationApi.as_view('aggregation')
 app.add_url_rule('/aggregations', view_func=aggregation_api, strict_slashes = False)
+
+auth_register = AuthRegister.as_view('auth')
+app.add_url_rule('/register',  view_func=auth_register, strict_slashes = False)
