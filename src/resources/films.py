@@ -44,7 +44,7 @@ class FilmListApi(MethodView):
         return jsonify(self.film_shema.dump(film)), 200
 
     def patch(self, uuid):
-        film = db.session.query(Film).filter_by(uuid = uuid).first()
+        film = FilmService.fetch_film_by_uuid(db.session, uuid)
         if not film:
             return '', 404
         try:
