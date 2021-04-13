@@ -1,14 +1,18 @@
 from flask.views import MethodView
 from flask import request, jsonify
 from marshmallow import ValidationError
+
 from src import db
 from src.database.models import Film
 from src.schemas.films import FilmSchema
+from src.resources.auth import token_required
+
 
 
 class FilmListApi(MethodView):
     film_shema = FilmSchema()
 
+    @token_required
     def get(self, uuid = None):
         if not uuid:
             films = db.session.query(Film).all()

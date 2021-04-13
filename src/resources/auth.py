@@ -33,7 +33,7 @@ class AuthLogin(MethodView):
         auth = request.authorization
         if not auth:
             return '', 401, {"WWW-Authenticate": "Basic realm='Authentication required'"}
-        user = db.session.query(User).filter_by(username = auth.get('username', ''))
+        user = db.session.query(User).filter_by(username = auth.get('username', '')).first()
         if not user or not check_password_hash(user.password, auth.get('password','')):
             return '', 401, {"WWW-Authenticate": "Basic realm='Authentication required'"}
         token = jwt.encode(
@@ -44,7 +44,7 @@ class AuthLogin(MethodView):
         )
         return jsonify(
             {
-                "token" : token.decode('utf-8')
+                "token": token
             }
         )
 
@@ -56,7 +56,7 @@ def token_required(func):
         if not token:
             return '', 401, {"WWW-Authenticate": "Basic realm='Authentication required'"}
         try:
-            uuid = jwt.decode(token,app.config['SECRET_KEY'])['user_id']
+            uuid = jwt.decode(token,app.config['SECRET_KEY'],algorithms=["HS256"])['user_id']
         except (KeyError, jwt.ExpiredSignatureError):
             return '', 401, {"WWW-Authenticate": "Basic realm='Authentication required'"}
         user = db.session.query(User).filter_by(uuid = uuid).first()
