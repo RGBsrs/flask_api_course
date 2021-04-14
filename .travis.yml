@@ -9,6 +9,6 @@ install:
   - pip install -r requirements.txt
 
 script:
-  - python -m pytest /tests
-  - coverage run -m pytest
-  - pyscodestyle --ignore=E722,E501,E402
+  - python -m pytest 
+  - coverage run --source="/src" -m pytest
+  - pyscodestyle src/ --ignore=E722,E501,E402
