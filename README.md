@@ -1,5 +1,5 @@
 # flask_api_course
-##ITVDN flask_api course
+## ITVDN flask_api course
 
 Web version of a part of this project available on [Heroku](http://flask-api-course.herokuapp.com/swagger/)
  
