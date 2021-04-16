@@ -1,9 +1,10 @@
 from flask.views import MethodView
 from flask import request, jsonify
 from marshmallow import ValidationError
+
 from src import db
-from src.database.models import Actor
 from src.schemas.actors import ActorSchema
+from src.services.actor_service import ActorService
 
 
 class ActorListApi(MethodView):
@@ -11,9 +12,9 @@ class ActorListApi(MethodView):
 
     def get(self, name = None):
         if not name:
-            actors = db.session.query(Actor).all()
+            actors = ActorService.fetch_all_actors(db.session).all()
             return jsonify(self.actor_shema.dump(actors, many = True)), 200
-        actor = db.session.query(Actor).filter_by(name = name).first()
+        actor = ActorService.fetch_actor_by_name(db.session, name)
         if not actor:
             return '', 404
         return jsonify(self.actor_shema.dump(actor)), 200
@@ -28,7 +29,7 @@ class ActorListApi(MethodView):
         return jsonify(self.actor_shema.dump(actor)), 201
 
     def put(self, name):
-        actor = db.session.query(Actor).filter_by(name = name).first()
+        actor = ActorService.fetch_actor_by_name(db.session, name)
         if not actor:
             return '', 404
         try:
@@ -40,7 +41,7 @@ class ActorListApi(MethodView):
         return jsonify(self.actor_shema.dump(actor)), 200
 
     def patch(self, name):
-        actor = db.session.query(Actor).filter_by(name = name).first()
+        actor = ActorService.fetch_actor_by_name(db.session, name)
         if not actor:
             return '', 404
         try:
@@ -54,7 +55,7 @@ class ActorListApi(MethodView):
 
 
     def delete(self, name):
-        actor = db.session.query(Actor).filter(name == name).first()
+        actor = ActorService.fetch_actor_by_name(db.session, name)
         if not actor:
             return '', 404
         db.session.delete(actor)
