@@ -1,3 +1,7 @@
-- Make Actors services
+[x] Make Actors services
 
-- Make Actors tests
+[x] Make Actors tests
+
+[] Make User tests
+
+[] Start integration tests
